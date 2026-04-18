@@ -504,14 +504,29 @@ footer{position:relative;z-index:2;background:var(--darker);border-top:1px solid
           <button class="m-confirm-btn" id="confirmBtn" disabled onclick="doConfirm()">💎 Konfirmasi Bayar</button>
         </div>
       </div>
-      <div class="rpanel" id="rp3">
-        <div class="success-wrap">
-          <div class="success-icon">💎</div>
-          <div class="success-title">Pesanan Dikonfirmasi!</div>
-          <p class="success-desc">Diamond akan masuk setelah pembayaran kami verifikasi. Proses <strong style="color:var(--gold)">1–5 menit</strong>.</p>
-          <div class="success-receipt" id="receipt"></div>
-          <button class="r-next-btn" style="max-width:310px;margin-top:6px" onclick="closeModal()">Tutup</button>
-        </div>
+      <script>
+function order(){
+    let game = document.getElementById("game").value;
+    let id = document.getElementById("idgame").value;
+    let diamond = document.getElementById("diamond").selectedOptions[0].text;
+    let wa = "628XXXXXXXXXX"; // nomor kamu
+
+    let orderID = "ORD" + Date.now();
+
+    let pesan = 
+`🧾 ORDER BARU
+ID Order: ${orderID}
+
+Game: ${game}
+ID: ${id}
+Paket: ${diamond}
+
+Status: MENUNGGU PEMBAYARAN`;
+
+    let url = "https://wa.me/" + wa + "?text=" + encodeURIComponent(pesan);
+    window.open(url, '_blank');
+}
+      </script>
       </div>
     </div>
   </div>
