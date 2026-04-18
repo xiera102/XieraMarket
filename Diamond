@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XieraMarket – Diamond Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #050508;
+    --dark: #0a0a12;
+    --darker: #07070e;
+    --card: #0f0f1a;
+    --card2: #141420;
+    --border: rgba(160,120,255,0.12);
+    --gold: #c8a84b;
+    --gold2: #e8c96a;
+    --silver: #a0a8c0;
+    --violet: #7b4fd4;
+    --violet2: #9d72f0;
+    --white: #e8e4f0;
+    --dim: #7a7898;
+    --red: #c0304a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Cormorant Garamond', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── PARTICLE BG ── */
+  #particles {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    animation: float linear infinite;
+    opacity: 0;
+  }
+  @keyframes float {
+    0%   { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.6; }
+    100% { transform: translateY(-10vh) translateX(60px) scale(1); opacity: 0; }
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.025;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    padding: 16px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(180deg, rgba(5,5,8,0.95) 0%, transparent 100%);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+  }
+  .logo {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.3rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--violet2) 50%, var(--gold2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    animation: shimmerLogo 4s ease-in-out infinite;
+    background-size: 200% 200%;
+  }
+  @keyframes shimmerLogo {
+    0%,100% { background-position: 0% 50%; }
+    50%      { background-position: 100% 50%; }
+  }
+  nav { display: flex; gap: 32px; align-items: center; }
+  nav a {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--silver);
+    text-decoration: none;
+    transition: color 0.3s;
+    position: relative;
+  }
+  nav a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0; width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+  }
+  nav a:hover { color: var(--gold); }
+  nav a:hover::after { width: 100%; }
+  .nav-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    padding: 8px 22px;
+    border: 1px solid var(--gold);
+    background: transparent;
+    color: var(--gold);
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .nav-btn:hover {
+    background: var(--gold);
+    color: var(--black);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; z-index: 2;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 20px 60px;
+    overflow: hidden;
+  }
+
+  /* Radial glow behind */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 30%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px; height: 700px;
+    background: radial-gradient(ellipse, rgba(100,50,200,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Angel SVG centerpiece */
+  .angel-wrap {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 560px; height: 560px;
+    pointer-events: none;
+    animation: angelFloat 6s ease-in-out infinite;
+    opacity: 0.22;
+    filter: blur(0px);
+  }
+  @keyframes angelFloat {
+    0%,100% { transform: translate(-50%, -50%) translateY(0px); }
+    50%      { transform: translate(-50%, -50%) translateY(-18px); }
+  }
+  .angel-wrap svg { width: 100%; height: 100%; }
+
+  /* Halo ring */
+  .halo {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -57%);
+    width: 200px; height: 60px;
+    border: 2px solid rgba(200,168,75,0.25);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: haloGlow 3s ease-in-out infinite;
+  }
+  @keyframes haloGlow {
+    0%,100% { box-shadow: 0 0 20px rgba(200,168,75,0.2); opacity: 0.4; }
+    50%      { box-shadow: 0 0 50px rgba(200,168,75,0.5); opacity: 0.9; }
+  }
+
+  .hero-content { position: relative; z-index: 3; }
+  .hero-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    animation: fadeUp 1s ease 0.2s both;
+  }
+  .hero-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(2.6rem, 7vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    background: linear-gradient(180deg, #ffffff 0%, #c0b0e0 40%, var(--violet2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+    animation: fadeUp 1s ease 0.4s both;
+    text-shadow: none;
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--silver);
+    letter-spacing: 0.05em;
+    margin-bottom: 48px;
+    animation: fadeUp 1s ease 0.6s both;
+  }
+  .hero-actions { display: flex; gap: 16px; justify-content: center; animation: fadeUp 1s ease 0.8s both; flex-wrap: wrap; }
+  .btn-primary {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 14px 40px;
+    background: linear-gradient(135deg, var(--violet) 0%, var(--violet2) 100%);
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(123,79,212,0.5); }
+  .btn-primary:hover::after { opacity: 1; }
+  .btn-outline {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 13px 36px;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    cursor: pointer;
+    transition: all 0.3s;
+    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+  }
+  .btn-outline:hover { background: rgba(200,168,75,0.12); box-shadow: 0 8px 24px rgba(200,168,75,0.2); transform: translateY(-2px); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── TICKER ── */
+  .ticker {
+    position: relative; z-index: 2;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--darker);
+    overflow: hidden;
+    padding: 10px 0;
+  }
+  .ticker-inner {
+    display: flex;
+    animation: ticker 30s linear infinite;
+    width: max-content;
+  }
+  .ticker-item {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 0 48px;
+    white-space: nowrap;
+  }
+  .ticker-item span { color: var(--dim); margin-right: 12px; }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── SECTION ── */
+  section { position: relative; z-index: 2; }
+  .section-pad { padding: 100px 40px; max-width: 1280px; margin: 0 auto; }
+
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--violet2);
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .section-label::before, .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--violet), transparent);
+    max-width: 60px;
+  }
+  .section-label::before { display: none; }
+  .section-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 16px;
+    letter-spacing: 0.04em;
+  }
+  .section-desc {
+    font-size: 1rem;
+    color: var(--dim);
+    font-style: italic;
+    max-width: 500px;
+    line-height: 1.7;
+    margin-bottom: 60px;
+  }
+
+  /* ── GAME TABS ── */
+  .tabs { display: flex; gap: 0; margin-bottom: 48px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .tab {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 12px 28px;
+    background: none;
+    border: none;
+    color: var(--dim);
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    border-bottom: 2px solid transparent;
+  }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .tab:hover:not(.active) { color: var(--silver); }
+
+  /* ── PRODUCT GRID ── */
+  .products { display: none; }
+  .products.active { display: grid; }
+  .grid-4 { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    cursor: pointer;
+  }
+  .card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(123,79,212,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(80,30,160,0.3), 0 0 0 1px rgba(123,79,212,0.3);
+  }
+  .card-badge {
+    position: absolute; top: 14px; left: 14px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    z-index: 2;
+  }
+  .badge-hot { background: rgba(192,48,74,0.9); color: white; }
+  .badge-new { background: rgba(123,79,212,0.9); color: white; }
+  .badge-sale { background: rgba(200,168,75,0.9); color: var(--black); }
+
+  .card-img {
+    height: 180px;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #0c0c18 0%, #131325 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .card-img::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 80%, rgba(123,79,212,0.15) 0%, transparent 70%);
+  }
+  .diamond-icon {
+    font-size: 3.5rem;
+    animation: diamondSpin 4s ease-in-out infinite;
+    position: relative; z-index: 1;
+    filter: drop-shadow(0 0 20px rgba(123,79,212,0.6));
+  }
+  @keyframes diamondSpin {
+    0%,100% { transform: rotate(-3deg) scale(1); filter: drop-shadow(0 0 16px rgba(123,79,212,0.5)); }
+    50%      { transform: rotate(3deg) scale(1.05); filter: drop-shadow(0 0 30px rgba(157,114,240,0.8)); }
+  }
+
+  .card-body { padding: 20px 20px 24px; }
+  .card-game {
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--violet2);
+    margin-bottom: 6px;
+  }
+  .card-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 4px;
+    letter-spacing: 0.05em;
+  }
+  .card-amount {
+    font-size: 0.9rem;
+    color: var(--dim);
+    font-style: italic;
+    margin-bottom: 16px;
+  }
+  .card-footer {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .price {
+    font-family: 'Cinzel', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+  .price-old {
+    font-size: 0.78rem;
+    color: var(--dim);
+    text-decoration: line-through;
+    display: block;
+    font-style: italic;
+  }
+  .buy-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 8px 18px;
+    background: linear-gradient(135deg, var(--violet) 0%, var(--violet2) 100%);
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .buy-btn:hover { transform: scale(1.05); box-shadow: 0 4px 20px rgba(123,79,212,0.5); }
+
+  /* ── HOW TO ORDER ── */
+  .how-bg { background: var(--darker); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; }
+  .step {
+    padding: 48px 36px;
+    border-right: 1px solid var(--border);
+    position: relative;
+    transition: background 0.3s;
+  }
+  .step:last-child { border-right: none; }
+  .step:hover { background: rgba(123,79,212,0.05); }
+  .step-num {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 3rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, rgba(123,79,212,0.4) 0%, rgba(123,79,212,0.08) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .step-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+  .step-desc { font-size: 0.9rem; color: var(--dim); font-style: italic; line-height: 1.65; }
+
+  /* ── WHY US ── */
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .why-item {
+    background: var(--card);
+    padding: 40px;
+    display: flex; gap: 24px; align-items: flex-start;
+    transition: background 0.3s;
+  }
+  .why-item:hover { background: var(--card2); }
+  .why-icon { font-size: 2rem; flex-shrink: 0; }
+  .why-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .why-desc { font-size: 0.92rem; color: var(--dim); font-style: italic; line-height: 1.6; }
+
+  /* ── TESTIMONIALS ── */
+  .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .testi {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s;
+  }
+  .testi:hover { transform: translateY(-4px); }
+  .testi::before {
+    content: '"';
+    position: absolute;
+    top: 16px; right: 24px;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 6rem;
+    color: rgba(123,79,212,0.1);
+    line-height: 1;
+  }
+  .testi-stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 16px; letter-spacing: 4px; }
+  .testi-text { font-size: 0.95rem; color: var(--silver); font-style: italic; line-height: 1.7; margin-bottom: 24px; }
+  .testi-user { display: flex; align-items: center; gap: 14px; }
+  .testi-avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--violet) 0%, var(--violet2) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+    flex-shrink: 0;
+  }
+  .testi-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .testi-game { font-size: 0.78rem; color: var(--dim); font-style: italic; }
+
+  /* ── PROMO BANNER ── */
+  .promo-banner {
+    background: linear-gradient(135deg, rgba(50,20,100,0.8) 0%, rgba(20,10,50,0.8) 100%);
+    border: 1px solid rgba(123,79,212,0.3);
+    padding: 60px 80px;
+    display: flex; align-items: center; justify-content: space-between; gap: 40px;
+    flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
+  }
+  .promo-banner::before {
+    content: '';
+    position: absolute; top: -50%; right: -10%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(123,79,212,0.15) 0%, transparent 70%);
+  }
+  .promo-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .promo-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+  }
+  .promo-desc { font-size: 1rem; color: var(--silver); font-style: italic; }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index: 2;
+    background: var(--darker);
+    border-top: 1px solid var(--border);
+    padding: 60px 40px 30px;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    max-width: 1280px; margin: 0 auto;
+    margin-bottom: 48px;
+  }
+  .footer-brand .logo { font-size: 1rem; display: block; margin-bottom: 16px; }
+  .footer-desc { font-size: 0.9rem; color: var(--dim); font-style: italic; line-height: 1.7; max-width: 280px; }
+  .footer-heading {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a { font-size: 0.88rem; color: var(--dim); text-decoration: none; font-style: italic; transition: color 0.3s; }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom {
+    max-width: 1280px; margin: 0 auto;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+  .footer-copy { font-size: 0.8rem; color: var(--dim); font-style: italic; }
+  .socials { display: flex; gap: 16px; }
+  .social-btn {
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    background: none;
+    color: var(--dim);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+  }
+  .social-btn:hover { border-color: var(--violet2); color: var(--violet2); background: rgba(123,79,212,0.1); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 999;
+    align-items: center; justify-content: center;
+    backdrop-filter: blur(8px);
+  }
+  .modal-overlay.open { display: flex; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+  .modal {
+    background: var(--card);
+    border: 1px solid rgba(123,79,212,0.3);
+    max-width: 420px; width: 90%;
+    padding: 40px;
+    position: relative;
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px;
+    background: none; border: none; color: var(--dim);
+    font-size: 1.3rem; cursor: pointer; transition: color 0.2s;
+  }
+  .modal-close:hover { color: var(--white); }
+  .modal-game { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--violet2); margin-bottom: 8px; }
+  .modal-title { font-family: 'Cinzel', serif; font-size: 1.3rem; letter-spacing: 0.06em; color: var(--white); margin-bottom: 4px; }
+  .modal-amount { font-size: 0.95rem; color: var(--dim); font-style: italic; margin-bottom: 24px; }
+  .modal-price-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 28px; }
+  .modal-price { font-family: 'Cinzel', serif; font-size: 1.8rem; color: var(--gold); font-weight: 600; }
+  .modal-label { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); margin-bottom: 6px; }
+  .modal-input {
+    width: 100%;
+    background: var(--darker);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .modal-input:focus { border-color: var(--violet2); }
+  .modal-input::placeholder { color: var(--dim); font-style: italic; }
+  .modal-confirm {
+    width: 100%;
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--violet) 0%, var(--violet2) 100%);
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 4px;
+  }
+  .modal-confirm:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(123,79,212,0.4); }
+
+  /* ── CART INDICATOR ── */
+  .cart-count {
+    position: absolute; top: -6px; right: -6px;
+    width: 18px; height: 18px;
+    background: var(--red);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    color: white;
+    font-weight: 600;
+    display: none;
+  }
+  .cart-wrap { position: relative; display: inline-block; }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .why-grid { grid-template-columns: 1fr; }
+    .promo-banner { padding: 40px 36px; }
+    nav { display: none; }
+  }
+  @media (max-width: 600px) {
+    .section-pad { padding: 70px 20px; }
+    header { padding: 14px 20px; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+    .step { border-right: none; border-bottom: 1px solid var(--border); }
+    .step:last-child { border-bottom: none; }
+    .angel-wrap { width: 320px; height: 320px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Particles -->
+<div id="particles"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">XieraMarket</div>
+  <nav>
+    <a href="#products">Produk</a>
+    <a href="#howto">Cara Order</a>
+    <a href="#why">Keunggulan</a>
+    <a href="#testi">Review</a>
+    <div class="cart-wrap">
+      <button class="nav-btn" onclick="openCart()">🛒 Keranjang</button>
+      <div class="cart-count" id="cartCount">0</div>
+    </div>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <!-- Angel SVG -->
+  <div class="angel-wrap">
+    <svg viewBox="0 0 500 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Wings Left -->
+      <path d="M250 280 C200 220, 80 200, 20 280 C60 260, 130 290, 180 320 C210 335, 235 320, 250 310Z" fill="rgba(80,50,140,0.55)" stroke="rgba(160,120,255,0.3)" stroke-width="1"/>
+      <path d="M250 310 C220 300, 70 330, 30 420 C80 380, 160 370, 200 360 C225 355, 245 345, 250 340Z" fill="rgba(60,35,110,0.5)" stroke="rgba(140,100,240,0.2)" stroke-width="1"/>
+      <path d="M250 340 C230 330, 100 370, 80 480 C120 440, 190 430, 220 420 C240 415, 250 400, 250 390Z" fill="rgba(40,20,80,0.45)" stroke="rgba(120,80,200,0.15)" stroke-width="1"/>
+      <!-- Wing feathers left detail -->
+      <path d="M80 240 C120 220, 160 230, 200 260" stroke="rgba(160,120,255,0.2)" stroke-width="1.5" fill="none"/>
+      <path d="M50 310 C100 290, 150 295, 195 330" stroke="rgba(160,120,255,0.15)" stroke-width="1.5" fill="none"/>
+      <!-- Wings Right -->
+      <path d="M250 280 C300 220, 420 200, 480 280 C440 260, 370 290, 320 320 C290 335, 265 320, 250 310Z" fill="rgba(80,50,140,0.55)" stroke="rgba(160,120,255,0.3)" stroke-width="1"/>
+      <path d="M250 310 C280 300, 430 330, 470 420 C420 380, 340 370, 300 360 C275 355, 255 345, 250 340Z" fill="rgba(60,35,110,0.5)" stroke="rgba(140,100,240,0.2)" stroke-width="1"/>
+      <path d="M250 340 C270 330, 400 370, 420 480 C380 440, 310 430, 280 420 C260 415, 250 400, 250 390Z" fill="rgba(40,20,80,0.45)" stroke="rgba(120,80,200,0.15)" stroke-width="1"/>
+      <!-- Wing feathers right detail -->
+      <path d="M420 240 C380 220, 340 230, 300 260" stroke="rgba(160,120,255,0.2)" stroke-width="1.5" fill="none"/>
+      <path d="M450 310 C400 290, 350 295, 305 330" stroke="rgba(160,120,255,0.15)" stroke-width="1.5" fill="none"/>
+      <!-- Body/Robe -->
+      <path d="M215 280 C215 300, 210 380, 220 500 L250 520 L280 500 C290 380, 285 300, 285 280Z" fill="rgba(30,15,60,0.7)" stroke="rgba(120,80,200,0.25)" stroke-width="1"/>
+      <path d="M225 360 C230 400, 240 460, 245 500 L250 510 L255 500 C260 460, 270 400, 275 360Z" fill="rgba(15,8,35,0.5)"/>
+      <!-- Neck + Head -->
+      <ellipse cx="250" cy="245" rx="22" ry="28" fill="rgba(20,10,45,0.8)" stroke="rgba(100,60,180,0.3)" stroke-width="1"/>
+      <!-- Face features (minimal, dark) -->
+      <ellipse cx="243" cy="241" rx="3" ry="3.5" fill="rgba(80,50,140,0.6)"/>
+      <ellipse cx="257" cy="241" rx="3" ry="3.5" fill="rgba(80,50,140,0.6)"/>
+      <path d="M244 252 Q250 256 256 252" stroke="rgba(100,70,160,0.4)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <!-- Crown/Halo glow -->
+      <ellipse cx="250" cy="212" rx="38" ry="10" stroke="rgba(200,168,75,0.35)" stroke-width="1.5" fill="none"/>
+      <ellipse cx="250" cy="212" rx="28" ry="7" stroke="rgba(200,168,75,0.15)" stroke-width="0.8" fill="none"/>
+      <!-- Shoulder armor details -->
+      <path d="M215 280 C200 270, 195 275, 200 290 C210 295, 215 290, 215 280Z" fill="rgba(80,50,140,0.4)" stroke="rgba(160,120,255,0.2)" stroke-width="1"/>
+      <path d="M285 280 C300 270, 305 275, 300 290 C290 295, 285 290, 285 280Z" fill="rgba(80,50,140,0.4)" stroke="rgba(160,120,255,0.2)" stroke-width="1"/>
+      <!-- Sword -->
+      <line x1="250" y1="310" x2="250" y2="520" stroke="rgba(180,140,255,0.3)" stroke-width="2"/>
+      <line x1="230" y1="340" x2="270" y2="340" stroke="rgba(200,168,75,0.4)" stroke-width="2.5"/>
+      <ellipse cx="250" cy="310" rx="6" ry="6" fill="rgba(200,168,75,0.4)" stroke="rgba(200,168,75,0.6)" stroke-width="1"/>
+      <!-- Floating diamond particles -->
+      <polygon points="250,155 257,165 250,175 243,165" fill="rgba(157,114,240,0.5)" stroke="rgba(180,140,255,0.5)" stroke-width="0.8"/>
+      <polygon points="195,190 200,198 195,206 190,198" fill="rgba(123,79,212,0.4)" stroke="rgba(160,120,255,0.4)" stroke-width="0.7"/>
+      <polygon points="305,190 310,198 305,206 300,198" fill="rgba(123,79,212,0.4)" stroke="rgba(160,120,255,0.4)" stroke-width="0.7"/>
+    </svg>
+  </div>
+  <div class="halo"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">✦ Top-Up Diamond Tercepat & Terpercaya ✦</div>
+    <h1 class="hero-title">XieraMarket</h1>
+    <p class="hero-sub">Dimana setiap diamond adalah senjata kemenanganmu</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+        💎 Beli Diamond
+      </button>
+      <button class="btn-outline" onclick="document.getElementById('howto').scrollIntoView({behavior:'smooth'})">
+        Cara Order
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="tickerInner">
+    <span class="ticker-item"><span>✦</span> Mobile Legends Diamond — Proses Instan</span>
+    <span class="ticker-item"><span>✦</span> Free Fire Diamond — Harga Terbaik</span>
+    <span class="ticker-item"><span>✦</span> Genshin Impact Genesis Crystal — Tersedia</span>
+    <span class="ticker-item"><span>✦</span> PUBG Mobile UC — 100% Aman</span>
+    <span class="ticker-item"><span>✦</span> Honor of Kings Token — Top-Up Sekarang</span>
+    <span class="ticker-item"><span>✦</span> Gacha Games — Semua Platform</span>
+    <span class="ticker-item"><span>✦</span> Mobile Legends Diamond — Proses Instan</span>
+    <span class="ticker-item"><span>✦</span> Free Fire Diamond — Harga Terbaik</span>
+    <span class="ticker-item"><span>✦</span> Genshin Impact Genesis Crystal — Tersedia</span>
+    <span class="ticker-item"><span>✦</span> PUBG Mobile UC — 100% Aman</span>
+    <span class="ticker-item"><span>✦</span> Honor of Kings Token — Top-Up Sekarang</span>
+    <span class="ticker-item"><span>✦</span> Gacha Games — Semua Platform</span>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="section-pad">
+    <div class="reveal">
+      <div class="section-label">💎 Produk Unggulan</div>
+      <h2 class="section-title">Pilih Game & Diamond</h2>
+      <p class="section-desc">Top-up instan untuk semua game favoritmu dengan harga terjangkau dan proses kilat.</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('ml', this)">Mobile Legends</button>
+      <button class="tab" onclick="switchTab('ff', this)">Free Fire</button>
+      <button class="tab" onclick="switchTab('gi', this)">Genshin Impact</button>
+      <button class="tab" onclick="switchTab('pubg', this)">PUBG Mobile</button>
+    </div>
+
+    <!-- Mobile Legends -->
+    <div class="products active grid-4" id="tab-ml">
+      <!-- Cards generated below -->
+    </div>
+    <!-- Free Fire -->
+    <div class="products grid-4" id="tab-ff"></div>
+    <!-- Genshin -->
+    <div class="products grid-4" id="tab-gi"></div>
+    <!-- PUBG -->
+    <div class="products grid-4" id="tab-pubg"></div>
+  </div>
+</section>
+
+<!-- HOW TO ORDER -->
+<section id="howto" class="how-bg">
+  <div class="section-pad">
+    <div class="reveal" style="text-align:center; margin-bottom:0;">
+      <div class="section-label" style="justify-content:center;">📋 Panduan</div>
+      <h2 class="section-title" style="text-align:center;">Cara Order</h2>
+      <p class="section-desc" style="text-align:center; margin:0 auto 0;">Mudah, cepat, dan aman dalam 4 langkah sederhana</p>
+    </div>
+  </div>
+  <div class="steps reveal">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Pilih Produk</div>
+      <p class="step-desc">Pilih game dan paket diamond yang kamu inginkan dari katalog lengkap kami.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">Isi ID Game</div>
+      <p class="step-desc">Masukkan ID akun game kamu dengan benar untuk memastikan diamond masuk ke akun yang tepat.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Lakukan Pembayaran</div>
+      <p class="step-desc">Pilih metode pembayaran — Transfer Bank, QRIS, OVO, GoPay, atau pulsa tersedia.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-title">Diamond Masuk</div>
+      <p class="step-desc">Diamond langsung masuk ke akunmu dalam hitungan menit. Siap tempur!</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="section-pad">
+    <div class="reveal">
+      <div class="section-label">⚔️ Keunggulan</div>
+      <h2 class="section-title">Mengapa XieraMarket?</h2>
+      <p class="section-desc">Ribuan pelanggan setia mempercayakan kebutuhan top-up mereka kepada kami.</p>
+    </div>
+    <div class="why-grid reveal">
+      <div class="why-item">
+        <div class="why-icon">⚡</div>
+        <div>
+          <div class="why-title">Proses Instan</div>
+          <p class="why-desc">Diamond masuk dalam hitungan detik hingga menit. Tidak ada penundaan, langsung main!</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">🔒</div>
+        <div>
+          <div class="why-title">100% Aman</div>
+          <p class="why-desc">Transaksi terenkripsi dan terlindungi. Kami tidak pernah meminta password akunmu.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">💰</div>
+        <div>
+          <div class="why-title">Harga Terbaik</div>
+          <p class="why-desc">Harga kompetitif dengan promo menarik setiap hari. Dapatkan lebih banyak untuk harga yang sama.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">🎧</div>
+        <div>
+          <div class="why-title">Support 24/7</div>
+          <p class="why-desc">Tim kami siap membantu kapan saja melalui WhatsApp, Telegram, dan live chat.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">🏆</div>
+        <div>
+          <div class="why-title">Terpercaya</div>
+          <p class="why-desc">Sudah melayani 50,000+ pelanggan dengan rating 4.9/5 bintang selama 3 tahun lebih.</p>
+        </div>
+      </div>
+      <div class="why-item">
+        <div class="why-icon">📱</div>
+        <div>
+          <div class="why-title">Multi Platform</div>
+          <p class="why-desc">Top-up untuk Android, iOS, dan PC. Semua game populer tersedia di satu tempat.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROMO BANNER -->
+<section>
+  <div class="section-pad" style="padding-top:0; padding-bottom: 80px;">
+    <div class="promo-banner reveal">
+      <div>
+        <div class="promo-tag">✦ Penawaran Terbatas</div>
+        <div class="promo-title">Bonus 20% Diamond<br>Setiap Pembelian Pertama</div>
+        <p class="promo-desc">Daftar sekarang dan nikmati bonus eksklusif untuk transaksi pertamamu.</p>
+      </div>
+      <button class="btn-primary" style="flex-shrink:0; padding: 16px 48px; font-size:0.85rem;" onclick="alert('Hubungi kami via WhatsApp untuk klaim bonus!')">
+        Klaim Bonus Sekarang
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testi" class="how-bg">
+  <div class="section-pad">
+    <div class="reveal">
+      <div class="section-label">⭐ Ulasan Pelanggan</div>
+      <h2 class="section-title">Kata Mereka</h2>
+      <p class="section-desc">Kepercayaan ribuan gamer adalah kebanggaan kami.</p>
+    </div>
+    <div class="testi-grid reveal">
+      <div class="testi">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">Top-up ML-nya cepet banget, dalam 3 detik udah masuk. Udah jadi langganan tetap selama setahun lebih. Recommended banget!</p>
+        <div class="testi-user">
+          <div class="testi-avatar">RZ</div>
+          <div>
+            <div class="testi-name">Rizky_Aldrian</div>
+            <div class="testi-game">Mobile Legends • Mythic Glory</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">Harga Diamond Free Fire-nya paling murah di antara semua toko yang pernah aku coba. CS juga ramah dan responsif. Mantap!</p>
+        <div class="testi-user">
+          <div class="testi-avatar">SA</div>
+          <div>
+            <div class="testi-name">SaraBella_FF</div>
+            <div class="testi-game">Free Fire • Grandmaster</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">Genesis Crystal Genshin masuk langsung, ga perlu nunggu lama. Promo first top-up bonusnya nyata, bukan tipuan. XieraMarket is the best!</p>
+        <div class="testi-user">
+          <div class="testi-avatar">DN</div>
+          <div>
+            <div class="testi-name">Dani_Xiangling</div>
+            <div class="testi-game">Genshin Impact • AR 60</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo">XieraMarket</span>
+      <p class="footer-desc">Toko top-up diamond terpercaya untuk semua game populer. Proses instan, harga terbaik, layanan 24/7.</p>
+    </div>
+    <div>
+      <div class="footer-heading">Menu</div>
+      <ul class="footer-links">
+        <li><a href="#products">Produk</a></li>
+        <li><a href="#howto">Cara Order</a></li>
+        <li><a href="#why">Keunggulan</a></li>
+        <li><a href="#testi">Ulasan</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Game</div>
+      <ul class="footer-links">
+        <li><a href="#">Mobile Legends</a></li>
+        <li><a href="#">Free Fire</a></li>
+        <li><a href="#">Genshin Impact</a></li>
+        <li><a href="#">PUBG Mobile</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Kontak</div>
+      <ul class="footer-links">
+        <li><a href="#">WhatsApp</a></li>
+        <li><a href="#">Telegram</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Email</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2024 XieraMarket. All rights reserved. | Top-Up Diamond Terpercaya</p>
+    <div class="socials">
+      <button class="social-btn" title="WhatsApp">WA</button>
+      <button class="social-btn" title="Telegram">TG</button>
+      <button class="social-btn" title="Instagram">IG</button>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-game" id="mGame"></div>
+    <div class="modal-title" id="mTitle"></div>
+    <div class="modal-amount" id="mAmount"></div>
+    <div class="modal-price-row">
+      <div class="modal-price" id="mPrice"></div>
+    </div>
+    <div class="modal-label">ID Akun Game *</div>
+    <input class="modal-input" id="mId" type="text" placeholder="Masukkan ID akun kamu...">
+    <div class="modal-label">Server / Zone (opsional)</div>
+    <input class="modal-input" id="mServer" type="text" placeholder="Contoh: 1234 atau Asia">
+    <button class="modal-confirm" onclick="confirmOrder()">💎 Konfirmasi Pembelian</button>
+  </div>
+</div>
+
+<script>
+// ── PRODUCT DATA ──
+const products = {
+  ml: [
+    { name:"Starter Pack", amount:"86 💎 Diamonds", price:"Rp 15.000", badge:"hot", emoji:"💎" },
+    { name:"Weekly Diamond", amount:"170 💎 Diamonds", price:"Rp 26.000", badge:"sale", oldPrice:"Rp 30.000", emoji:"💎" },
+    { name:"Twilight Pass", amount:"355 💎 Diamonds", price:"Rp 54.000", badge:null, emoji:"💎" },
+    { name:"Star Diamond", amount:"570 💎 Diamonds", price:"Rp 86.000", badge:null, emoji:"💎" },
+    { name:"Legend Pack", amount:"1050 💎 Diamonds", price:"Rp 159.000", badge:"new", emoji:"💎" },
+    { name:"Mythic Crystal", amount:"2195 💎 Diamonds", price:"Rp 329.000", badge:null, emoji:"💎" },
+    { name:"Supreme Bundle", amount:"3688 💎 Diamonds", price:"Rp 549.000", badge:"sale", oldPrice:"Rp 620.000", emoji:"💎" },
+    { name:"Galaxy Gem", amount:"5532 💎 Diamonds", price:"Rp 829.000", badge:null, emoji:"💎" },
+  ],
+  ff: [
+    { name:"Mini Top-Up", amount:"50 💠 Diamonds", price:"Rp 8.000", badge:"hot", emoji:"💠" },
+    { name:"Basic Pack", amount:"100 💠 Diamonds", price:"Rp 15.000", badge:null, emoji:"💠" },
+    { name:"Silver Bullet", amount:"210 💠 Diamonds", price:"Rp 30.000", badge:"sale", oldPrice:"Rp 35.000", emoji:"💠" },
+    { name:"Gold Rush", amount:"520 💠 Diamonds", price:"Rp 74.000", badge:null, emoji:"💠" },
+    { name:"Platinum Vault", amount:"1060 💠 Diamonds", price:"Rp 149.000", badge:"new", emoji:"💠" },
+    { name:"Diamond Surge", amount:"2180 💠 Diamonds", price:"Rp 299.000", badge:null, emoji:"💠" },
+    { name:"Elite Bundle", amount:"5600 💠 Diamonds", price:"Rp 749.000", badge:"sale", oldPrice:"Rp 850.000", emoji:"💠" },
+    { name:"Ultimate Chest", amount:"11200 💠 Diamonds", price:"Rp 1.499.000", badge:null, emoji:"💠" },
+  ],
+  gi: [
+    { name:"Adventurer", amount:"60 🔮 Genesis", price:"Rp 14.000", badge:"new", emoji:"🔮" },
+    { name:"Explorer", amount:"330 🔮 Genesis", price:"Rp 74.000", badge:null, emoji:"🔮" },
+    { name:"Traveler", amount:"680 🔮 Genesis", price:"Rp 149.000", badge:"hot", emoji:"🔮" },
+    { name:"Constellation", amount:"1090 🔮 Genesis", price:"Rp 239.000", badge:null, emoji:"🔮" },
+    { name:"Star Weaver", amount:"2240 🔮 Genesis", price:"Rp 489.000", badge:"sale", oldPrice:"Rp 560.000", emoji:"🔮" },
+    { name:"Primordial Arc", amount:"3880 🔮 Genesis", price:"Rp 849.000", badge:null, emoji:"🔮" },
+    { name:"Celestial", amount:"8080 🔮 Genesis", price:"Rp 1.749.000", badge:null, emoji:"🔮" },
+    { name:"Archon Gift", amount:"16880 🔮 Genesis", price:"Rp 3.499.000", badge:"new", emoji:"🔮" },
+  ],
+  pubg: [
+    { name:"Bronze UC", amount:"60 🪙 UC", price:"Rp 16.000", badge:null, emoji:"🪙" },
+    { name:"Silver UC", amount:"325 🪙 UC", price:"Rp 74.000", badge:"hot", emoji:"🪙" },
+    { name:"Gold UC", amount:"660 🪙 UC", price:"Rp 149.000", badge:null, emoji:"🪙" },
+    { name:"Platinum UC", amount:"1800 🪙 UC", price:"Rp 399.000", badge:"sale", oldPrice:"Rp 450.000", emoji:"🪙" },
+    { name:"Diamond UC", amount:"3850 🪙 UC", price:"Rp 849.000", badge:null, emoji:"🪙" },
+    { name:"Master UC", amount:"8100 🪙 UC", price:"Rp 1.749.000", badge:"new", emoji:"🪙" },
+    { name:"Champion UC", amount:"16800 🪙 UC", price:"Rp 3.499.000", badge:null, emoji:"🪙" },
+    { name:"Legend UC", amount:"35000 🪙 UC", price:"Rp 7.299.000", badge:null, emoji:"🪙" },
+  ]
+};
+
+const gameNames = { ml:"Mobile Legends", ff:"Free Fire", gi:"Genshin Impact", pubg:"PUBG Mobile" };
+
+function buildCards() {
+  Object.keys(products).forEach(game => {
+    const container = document.getElementById(`tab-${game}`);
+    products[game].forEach(p => {
+      let badgeHtml = '';
+      if (p.badge === 'hot') badgeHtml = `<div class="card-badge badge-hot">🔥 Hot</div>`;
+      else if (p.badge === 'new') badgeHtml = `<div class="card-badge badge-new">✨ New</div>`;
+      else if (p.badge === 'sale') badgeHtml = `<div class="card-badge badge-sale">💸 Sale</div>`;
+
+      let priceHtml = `<div><div class="price">${p.price}</div>${p.oldPrice ? `<span class="price-old">${p.oldPrice}</span>` : ''}</div>`;
+
+      container.innerHTML += `
+        <div class="card">
+          ${badgeHtml}
+          <div class="card-img">
+            <div class="diamond-icon">${p.emoji}</div>
+          </div>
+          <div class="card-body">
+            <div class="card-game">${gameNames[game]}</div>
+            <div class="card-name">${p.name}</div>
+            <div class="card-amount">${p.amount}</div>
+            <div class="card-footer">
+              ${priceHtml}
+              <button class="buy-btn" onclick="openModal('${gameNames[game]}','${p.name}','${p.amount}','${p.price}')">Beli</button>
+            </div>
+          </div>
+        </div>`;
+    });
+  });
+}
+buildCards();
+
+// ── TABS ──
+function switchTab(id, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.products').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(`tab-${id}`).classList.add('active');
+}
+
+// ── MODAL ──
+function openModal(game, name, amount, price) {
+  document.getElementById('mGame').textContent = game;
+  document.getElementById('mTitle').textContent = name;
+  document.getElementById('mAmount').textContent = amount;
+  document.getElementById('mPrice').textContent = price;
+  document.getElementById('mId').value = '';
+  document.getElementById('mServer').value = '';
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+function confirmOrder() {
+  const id = document.getElementById('mId').value.trim();
+  if (!id) { document.getElementById('mId').focus(); document.getElementById('mId').style.borderColor = '#c0304a'; return; }
+  closeModal();
+  showToast('✅ Pesanan berhasil! Tim kami akan segera memproses ordermu.');
+  updateCart();
+}
+function openCart() { showToast('🛒 Keranjang belanja akan segera tersedia!'); }
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.style.cssText = `position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:rgba(15,15,26,0.97);border:1px solid rgba(123,79,212,0.4);color:#e8e4f0;font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.1em;padding:16px 32px;z-index:9999;box-shadow:0 8px 40px rgba(0,0,0,0.5);animation:fadeUp 0.4s ease;`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.4s'; setTimeout(() => t.remove(), 400); }, 3000);
+}
+
+let cartN = 0;
+function updateCart() {
+  cartN++;
+  const el = document.getElementById('cartCount');
+  el.textContent = cartN; el.style.display = 'flex';
+}
+
+// ── PARTICLES ──
+function createParticles() {
+  const container = document.getElementById('particles');
+  const colors = ['rgba(123,79,212,0.6)','rgba(157,114,240,0.5)','rgba(200,168,75,0.4)','rgba(100,60,200,0.4)'];
+  for (let i = 0; i < 35; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 4 + 1;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      left:${Math.random()*100}%;
+      animation-duration:${Math.random()*15+10}s;
+      animation-delay:${Math.random()*10}s;
+    `;
+    container.appendChild(p);
+  }
+}
+createParticles();
+
+// ── SCROLL REVEAL ──
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
